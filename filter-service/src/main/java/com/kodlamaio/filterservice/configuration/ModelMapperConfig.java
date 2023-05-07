@@ -1,4 +1,4 @@
-package com.kodlamaio.inventoryservice.configuration;
+package com.kodlamaio.filterservice.configuration;
 
 import com.kodlamaio.commonpackage.utils.mappers.ModelMapperManager;
 import com.kodlamaio.commonpackage.utils.mappers.ModelMapperService;
