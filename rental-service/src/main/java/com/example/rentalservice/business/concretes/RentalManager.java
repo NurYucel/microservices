@@ -1,5 +1,6 @@
 package com.example.rentalservice.business.concretes;
 
+import com.example.rentalservice.api.clients.CarClient;
 import com.example.rentalservice.business.abstracts.RentalService;
 import com.example.rentalservice.business.dto.requests.CreateRentalRequest;
 import com.example.rentalservice.business.dto.requests.UpdateRentalRequest;
@@ -7,9 +8,11 @@ import com.example.rentalservice.business.dto.response.CreateRentalResponse;
 import com.example.rentalservice.business.dto.response.GetAllRentalsResponse;
 import com.example.rentalservice.business.dto.response.GetRentalResponse;
 import com.example.rentalservice.business.dto.response.UpdateRentalResponse;
+import com.example.rentalservice.business.kafka.producer.RentalProducer;
 import com.example.rentalservice.business.rules.RentalBusinessRules;
 import com.example.rentalservice.entities.Rental;
 import com.example.rentalservice.repository.RentalRepository;
+import com.kodlamaio.commonpackage.events.rental.RentalCreatedEvent;
 import com.kodlamaio.commonpackage.utils.mappers.ModelMapperService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,13 +21,14 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-
 @Service
 @AllArgsConstructor
 public class RentalManager implements RentalService {
     private final RentalRepository repository;
     private final ModelMapperService mapper;
     private final RentalBusinessRules rules;
+    private final CarClient carClient;
+    private final RentalProducer producer;
 
     @Override
     public List<GetAllRentalsResponse> getAll() {
@@ -48,14 +52,20 @@ public class RentalManager implements RentalService {
 
     @Override
     public CreateRentalResponse add(CreateRentalRequest request) {
+        carClient.checkIfCarAvailable(request.getCarId());
         var rental = mapper.forRequest().map(request, Rental.class);
         rental.setId(null);
         rental.setTotalPrice(getTotalPrice(rental));
         rental.setRentedAt(LocalDate.now());
         repository.save(rental);
+        sendKafkaRentalCreatedEvent(request.getCarId());
         var response = mapper.forResponse().map(rental, CreateRentalResponse.class);
 
         return response;
+    }
+
+    private void sendKafkaRentalCreatedEvent(UUID carId) {
+        producer.sendMessage(new RentalCreatedEvent(carId));
     }
 
     @Override
