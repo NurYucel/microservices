@@ -36,8 +36,13 @@ public class FilterManager implements FilterService {
     }
 
     @Override
+    public void deleteByCarId(UUID carId) {
+        repository.deleteById(carId);
+    }
+
+    @Override
     public void add(Filter filter) {
-        filter.setId(UUID.randomUUID());
+        //filter.setId(UUID.randomUUID());
         repository.save(filter);
     }
 

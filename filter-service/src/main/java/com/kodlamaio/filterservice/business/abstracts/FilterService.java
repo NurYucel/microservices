@@ -12,6 +12,8 @@ public interface FilterService {
 
     GetFilterResponse getById(UUID id);
 
+    public void deleteByCarId(UUID carId);
+
     void add(Filter filter);
 
     void delete(UUID id);
