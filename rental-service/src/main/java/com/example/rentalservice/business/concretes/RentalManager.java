@@ -8,11 +8,12 @@ import com.example.rentalservice.business.dto.response.CreateRentalResponse;
 import com.example.rentalservice.business.dto.response.GetAllRentalsResponse;
 import com.example.rentalservice.business.dto.response.GetRentalResponse;
 import com.example.rentalservice.business.dto.response.UpdateRentalResponse;
-import com.example.rentalservice.business.kafka.producer.RentalProducer;
 import com.example.rentalservice.business.rules.RentalBusinessRules;
 import com.example.rentalservice.entities.Rental;
 import com.example.rentalservice.repository.RentalRepository;
 import com.kodlamaio.commonpackage.events.rental.RentalCreatedEvent;
+import com.kodlamaio.commonpackage.events.rental.RentalDeletedEvent;
+import com.kodlamaio.commonpackage.kafka.producer.KafkaProducer;
 import com.kodlamaio.commonpackage.utils.mappers.ModelMapperService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class RentalManager implements RentalService {
     private final ModelMapperService mapper;
     private final RentalBusinessRules rules;
     private final CarClient carClient;
-    private final RentalProducer producer;
+    private final KafkaProducer producer;
 
     @Override
     public List<GetAllRentalsResponse> getAll() {
@@ -52,7 +53,7 @@ public class RentalManager implements RentalService {
 
     @Override
     public CreateRentalResponse add(CreateRentalRequest request) {
-        carClient.checkIfCarAvailable(request.getCarId());
+        rules.ensureCarIsAvailable(request.getCarId());
         var rental = mapper.forRequest().map(request, Rental.class);
         rental.setId(null);
         rental.setTotalPrice(getTotalPrice(rental));
@@ -62,10 +63,6 @@ public class RentalManager implements RentalService {
         var response = mapper.forResponse().map(rental, CreateRentalResponse.class);
 
         return response;
-    }
-
-    private void sendKafkaRentalCreatedEvent(UUID carId) {
-        producer.sendMessage(new RentalCreatedEvent(carId));
     }
 
     @Override
@@ -82,7 +79,17 @@ public class RentalManager implements RentalService {
     @Override
     public void delete(UUID id) {
         rules.checkIfRentalExists(id);
+        sendKafkaRentalCreatedEvent(id);
         repository.deleteById(id);
+    }
+
+    private void sendKafkaRentalCreatedEvent(UUID carId) {
+        producer.sendMessage(new RentalCreatedEvent(carId), "rental-created");
+    }
+
+    private void sendKafkaRentalDeletedEvent(UUID id) {
+        var carId = repository.findById(id).orElseThrow().getCarId();
+        producer.sendMessage(new RentalDeletedEvent(carId), "rental-deleted");
     }
 
     private double getTotalPrice(Rental rental) {
