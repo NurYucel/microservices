@@ -34,6 +34,5 @@ server:
 resilience4j.retry:
   instances:
     retryToInventoryService:
-      maxAttempts: 20
-      waitDuration: 10s
-
+      maxAttempts: 5
+      waitDuration: 15s
