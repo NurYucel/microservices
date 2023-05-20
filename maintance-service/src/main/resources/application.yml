@@ -1,10 +1,10 @@
 spring:
   application:
-    name: rental-service
+    name: MAINTENANCE-SERVICE
   datasource:
     username: postgres
     password: '12345'
-    url: jdbc:postgresql://localhost:5432/rentaldb
+    url: jdbc:postgresql://localhost:5432/maintenancedb
   jpa:
     properties:
       hibernate:
@@ -34,6 +34,6 @@ server:
 resilience4j.retry:
   instances:
     retryToInventoryService:
-      maxAttempts: 20
+      maxAttempts: 5
       waitDuration: 10s
 

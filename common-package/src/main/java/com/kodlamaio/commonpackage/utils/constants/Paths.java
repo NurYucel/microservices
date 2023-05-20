@@ -18,4 +18,9 @@ public class Paths {
         public static final String ServiceBasePackage =
                 "com.kodlamaio.rentalservice";
     }
+
+    public static class Maintenance {
+        public static final String ServiceBasePackage =
+                "com.kodlamaio.maintenanceservice";
+    }
 }
