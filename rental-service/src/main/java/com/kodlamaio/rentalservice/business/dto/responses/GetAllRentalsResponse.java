@@ -1,4 +1,4 @@
-package com.kodlamaio.rentalservice.business.dto.response;
+package com.kodlamaio.rentalservice.business.dto.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateRentalResponse {
+public class GetAllRentalsResponse {
     private UUID id;
     private UUID carId;
     private double dailyPrice;

@@ -1,10 +1,10 @@
 spring:
   application:
-    name: RENTAL-SERVICE
+    name: PAYMENT-SERVICE
   datasource:
     username: postgres
     password: '12345'
-    url: jdbc:postgresql://localhost:5432/rentaldb
+    url: jdbc:postgresql://localhost:5432/paymentdb
   jpa:
     properties:
       hibernate:
