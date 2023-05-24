@@ -1,6 +1,6 @@
 spring:
   application:
-    name: INVENTORY-SERVICE
+    name: MAINTENANCE-SERVICE
   cloud:
     config:
       profile: dev
