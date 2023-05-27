@@ -1,25 +1,23 @@
-package com.kodlamaio.rentalservice.entities;
+package com.kodlamaio.commonpackage.events.rental;
 
-import jakarta.persistence.*;
+import com.kodlamaio.commonpackage.events.Event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-@Entity
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "rentals")
-public class Rental {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    private UUID carId;
+public class InvoiceCreatedEvent implements Event {
+    private String cardHolder;
+    private String modelName;
+    private String brandName;
+    private String plate;
+    private int modelYear;
     private double dailyPrice;
     private double totalPrice;
     private int rentedForDays;

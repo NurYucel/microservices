@@ -1,4 +1,4 @@
-package com.kodlamaio.filterservice;
+package com.kodlamaio.invoiceservice;
 
 import com.kodlamaio.commonpackage.utils.constants.Paths;
 import org.springframework.boot.SpringApplication;
@@ -6,11 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
-@SpringBootApplication(scanBasePackages = {Paths.ConfigurationBasePackage, Paths.Filter.ServiceBasePackage})
-public class FilterServiceApplication {
+@SpringBootApplication(scanBasePackages = {Paths.ConfigurationBasePackage, Paths.Invoice.ServiceBasePackage})
+public class InvoiceServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(FilterServiceApplication.class, args);
+        SpringApplication.run(InvoiceServiceApplication.class, args);
     }
 
 }

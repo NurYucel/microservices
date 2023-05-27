@@ -7,8 +7,15 @@ services:
       - "9092:9092"
     volumes:
       - kafka_data:/apt/kafka/kafka-logs
-  mongodb:
+  mongodb_filter:
     container_name: turkcell-filterdb
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/dd
+  mongodb_invoice:
+    container_name: turkcell-invoicedb
     image: mongo
     ports:
       - "27017:27017"
@@ -29,4 +36,6 @@ services:
 
 volumes:
   kafka_data:
-  mongodb_data:
+  mongodb_filter_data:
+  mongodb_invoice_data:
+

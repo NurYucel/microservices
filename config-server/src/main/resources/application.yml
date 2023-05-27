@@ -7,7 +7,5 @@ spring:
         default-label: master
         git:
           uri: https://github.com/NurYucel/config-server
-  profiles:
-    active: prod
 server:
   port: 8888

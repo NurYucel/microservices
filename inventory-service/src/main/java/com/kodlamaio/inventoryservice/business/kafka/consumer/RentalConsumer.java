@@ -32,4 +32,5 @@ public class RentalConsumer {
         service.changeStateByCarId(State.Available, event.getCarId());
         log.info("Rental deleted event consumed {}", event);
     }
+
 }

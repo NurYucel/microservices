@@ -9,10 +9,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication(scanBasePackages = {Paths.ConfigurationBasePackage, Paths.Maintenance.ServiceBasePackage})
-public class MaintanceServiceApplication {
+public class MaintenanceServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MaintanceServiceApplication.class, args);
+        SpringApplication.run(MaintenanceServiceApplication.class, args);
     }
 
 }

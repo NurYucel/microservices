@@ -1,28 +1,25 @@
-package com.kodlamaio.rentalservice.entities;
+package com.kodlamaio.invoiceservice.business.dto.responses.get;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-@Entity
-@Setter
 @Getter
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
-@Table(name = "rentals")
-public class Rental {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    private UUID carId;
+@NoArgsConstructor
+public class GetAllInvoicesResponse {
+    private String id;
+    private String cardHolder;
+    private String modelName;
+    private String brandName;
+    private String plate;
+    private int modelYear;
     private double dailyPrice;
     private double totalPrice;
     private int rentedForDays;
     private LocalDateTime rentedAt;
-
 }
