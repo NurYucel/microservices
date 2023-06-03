@@ -7,6 +7,21 @@ services:
       - "9092:9092"
     volumes:
       - kafka_data:/apt/kafka/kafka-logs
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://192.168.1.102:9092
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak-t2
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    command: start-dev
+    volumes:
+      - .:/opt/jboss/keycloak/imports
+  
   mongodb_filter:
     container_name: turkcell-filterdb
     image: mongo
